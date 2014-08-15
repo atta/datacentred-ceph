@@ -11,16 +11,17 @@
 #
 # Hiera:
 #
-#   ceph::osds::disks:
+#   ceph::params::disks:
 #     - 'sdb:/dev/sdd1'
 #     - 'sdc:/dev/sdd1'
 #
 # See ceph::osd for more details on individual list items
 #
-class ceph::osds (
-  $disks,
-) {
+class ceph::osds {
 
-  ceph::osd { $disks: }
+  include ::ceph
+  Class['::ceph'] -> Class['ceph::osds']
+
+  ceph::osd { $ceph::params::disks: }
 
 }

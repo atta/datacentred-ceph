@@ -63,7 +63,7 @@ This is a shared set of code so should probably live in hiera/common/%{calling_m
       YZqsfM9HbuMY2NjYv8PhZISfe3pNH+FRJy5vNoZ41up8GJjHDa+w
       -----END RSA PRIVATE KEY-----
     ceph::params::id_rsa_pub: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDkMxpXTbS2RxrNL...
-    ceph::osd::osds:
+    ceph::params::disks:
        - 'sdb:/dev/sdd1'
        - 'sdc:/dev/sdd2'
 

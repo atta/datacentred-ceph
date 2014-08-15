@@ -9,5 +9,6 @@ class ceph::params (
   $id_rsa,
   $id_rsa_pub,
   $client_keys = {},
+  $disks = [],
 ) {
 }
