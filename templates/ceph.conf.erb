@@ -1,0 +1,8 @@
+[global]
+fsid = <%= scope.lookupvar('ceph::params::fsid') %>
+mon initial members = <%= scope.lookupvar('ceph::params::mon_initial_member') %>
+mon host = <%= scope.lookupvar('ceph::params::mon_host') %>
+auth supported = cephx
+filestore xattr use omap = true
+public network = <%= scope.lookupvar('ceph::params::public_network') %>
+cluster network = <%= scope.lookupvar('ceph::params::cluster_network') %>
