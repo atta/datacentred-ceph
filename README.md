@@ -77,7 +77,7 @@ Simply a matter of creating a profile with the following
 
 Again simply a matter of the following
 
-    include ceph::osds
+    include ceph::osd
 
 ### RADOS gateway
 

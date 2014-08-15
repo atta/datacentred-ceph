@@ -11,4 +11,9 @@ class ceph::params (
   $client_keys = {},
   $disks = [],
 ) {
+
+  if $caller_module_name != $module_name {
+    fail("${name} is private")
+  }
+
 }

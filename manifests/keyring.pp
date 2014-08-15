@@ -24,6 +24,10 @@ define ceph::keyring (
   $group = 'root',
 ) {
 
+  if $caller_module_name != $module_name {
+    fail("${name} is private")
+  }
+
   file { "${path}/${name}":
     ensure  => file,
     owner   => $owner,

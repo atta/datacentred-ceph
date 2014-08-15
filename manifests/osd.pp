@@ -1,40 +1,27 @@
-# == Define: ceph::osd
+# == Class: ceph::osd
 #
-# Provision an OSD
+# Wrapper around the simple OSD class to support multiple disks per host and
+# give hiera support
 #
 # === Examples
 #
-# ceph::osd { 'sdb:/dev/sdg1': }
+# Manifest:
 #
-# Two parameters are specified inline separated by a colon.  The first is
-# the OSD proper, the second is the journal device, typically an SSD.
+#   include ::ceph::osd
 #
-define ceph::osd {
+# Hiera:
+#
+#   ceph::params::disks:
+#     - 'sdb:/dev/sdd1'
+#     - 'sdc:/dev/sdd1'
+#
+# See ceph::osd for more details on individual list items
+#
+class ceph::osd {
 
-  include ceph
-  Class['::ceph'] -> Ceph::Osd[$name]
+  include ::ceph
+  Class['::ceph'] -> Class['ceph::osd']
 
-  $fields = split($name, ':')
-  $disk = $fields[0]
-
-  exec { "${disk}: gather-keys":
-    command => "ceph-deploy gatherkeys ${ceph::params::mon_initial_member}",
-    cwd     => "/home/${ceph::params::deploy_user}",
-    unless  => "ls /home/${ceph::params::deploy_user}/ceph.bootstrap-osd.keyring",
-  } ->
-
-  exec { "ceph-deploy disk zap ${::hostname}:${disk}":
-    cwd    => "/home/${ceph::params::deploy_user}",
-    unless => "ls /home/${ceph::params::deploy_user}/${disk}",
-  } ->
-
-  exec { "ceph-deploy osd create ${::hostname}:${name}":
-    cwd    => "/home/${ceph::params::deploy_user}",
-    unless => "ls /home/${ceph::params::deploy_user}/${disk}",
-  } ->
-
-  file { "/home/${ceph::params::deploy_user}/${disk}":
-    ensure => present,
-  }
+  ceph::osd_private { $ceph::params::disks: }
 
 }

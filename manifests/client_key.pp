@@ -45,6 +45,10 @@ define ceph::client_key (
   $caps_osd = undef,
 ) {
 
+  if $caller_module_name != $module_name {
+    fail("${name} is private")
+  }
+
   include ::ceph::params
 
   ceph::keyring { "ceph.${context}.${name}.keyring":

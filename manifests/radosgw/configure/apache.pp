@@ -5,6 +5,10 @@
 #
 class ceph::radosgw::configure::apache {
 
+  if $caller_module_name != $module_name {
+    fail("${name} is private")
+  }
+
   include ::apache
   include ::apache::mod::fastcgi
 

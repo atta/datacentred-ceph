@@ -6,6 +6,10 @@
 #
 class ceph {
 
+  if $caller_module_name != $module_name {
+    fail("${name} is private")
+  }
+
   include ::ceph::params
 
   # Create the ceph deploy user

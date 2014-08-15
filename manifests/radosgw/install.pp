@@ -4,6 +4,10 @@
 #
 class ceph::radosgw::install {
 
+  if $caller_module_name != $module_name {
+    fail("${name} is private")
+  }
+
   package { 'radosgw':
     ensure => installed,
   }

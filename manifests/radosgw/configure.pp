@@ -4,6 +4,10 @@
 #
 class ceph::radosgw::configure {
 
+  if $caller_module_name != $module_name {
+    fail("${name} is private")
+  }
+
   contain ceph::radosgw::configure::apache
 
   $user = "client.radosgw.${::hostname}"
