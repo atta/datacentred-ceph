@@ -14,7 +14,7 @@
 class ceph::radosgw {
 
   include ceph
-  Class['::ceph'] -> Class['::ceph::mon']
+  Class['::ceph'] -> Class['::ceph::radosgw']
 
   contain ceph::radosgw::install
   contain ceph::radosgw::configure
