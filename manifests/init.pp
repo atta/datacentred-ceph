@@ -65,7 +65,7 @@ class ceph {
     owner   => 'root',
     group   => 'root',
     mode    => '0440',
-    content => "${ceph::params::deploy_user} ALL=(all) NOPASSWD:ALL",
+    content => "${ceph::params::deploy_user} ALL=(root) NOPASSWD:ALL",
   } ->
 
   # Install ceph deploy and ceph
