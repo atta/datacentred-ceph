@@ -19,6 +19,7 @@ define ceph::osd_private {
 
   exec { "${disk}: gather-keys":
     command => "ceph-deploy gatherkeys ${ceph::params::mon_initial_member}",
+    user    => $ceph::params::deploy_user,
     cwd     => "/home/${ceph::params::deploy_user}",
     unless  => "ls /home/${ceph::params::deploy_user}/ceph.bootstrap-osd.keyring",
   } ->
