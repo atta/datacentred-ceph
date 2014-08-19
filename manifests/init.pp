@@ -18,6 +18,7 @@ class ceph {
     comment    => 'Ceph Deploy',
     managehome => true,
     password   => '!',
+    system     => $ceph::params::deploy_user_is_system,
   } ->
 
   # Enable key based SSH access

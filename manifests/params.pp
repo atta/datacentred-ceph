@@ -1,5 +1,11 @@
+# == Class: ceph::params
+#
+# Parameter container class.  Override with hiera
+# data bindings
+#
 class ceph::params (
   $deploy_user,
+  $deploy_user_is_system = false,
   $fsid,
   $mon_initial_member,
   $mon_host,
