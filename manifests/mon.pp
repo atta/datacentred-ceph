@@ -7,6 +7,12 @@ class ceph::mon {
   include ceph
   Class['::ceph'] -> Class['::ceph::mon']
 
+  Exec {
+    user        => $ceph::params::deploy_user,
+    environment => "USER=${ceph::params::deploy_user}",
+    cwd         => "/home/${ceph::params::deploy_user}",
+  }
+
   ceph::keyring { 'ceph.mon.keyring':
     user     => 'mon.',
     key      => $ceph::params::monitor_secret,
@@ -17,19 +23,11 @@ class ceph::mon {
   } ->
 
   exec { 'deploy-mon':
-    command => "ceph-deploy mon create ${::hostname}",
-    cwd     => "/home/${ceph::params::deploy_user}",
-    unless  => "ceph --cluster=ceph --admin-daemon /var/run/ceph/ceph-mon.${::hostname}.asok mon_status"
-  }
-
-  # Create client keys not part of the provisioning process
-  if $::hostname == $ceph::params::mon_initial_member {
-
-    $defaults = {
-      require => Exec['deploy-mon'],
-    }
-    create_resources('ceph::client_key', $ceph::params::client_keys, $defaults)
-
+    command     => "ceph-deploy --overwrite-conf mon create ${::hostname}",
+    user        => $ceph::params::deploy_user,
+    environment => "USER=${ceph::params::deploy_user}",
+    cwd         => "/home/${ceph::params::deploy_user}",
+    unless      => "sudo ceph --cluster=ceph --admin-daemon /var/run/ceph/ceph-mon.${::hostname}.asok mon_status"
   }
 
 }

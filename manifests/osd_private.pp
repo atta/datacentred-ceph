@@ -14,23 +14,25 @@ define ceph::osd_private {
   include ceph
   Class['::ceph'] -> Ceph::Osd_private[$name]
 
+  Exec {
+    user        => $ceph::params::deploy_user,
+    environment => "USER=${ceph::params::deploy_user}",
+    cwd         => "/home/${ceph::params::deploy_user}",
+  }
+
   $fields = split($name, ':')
   $disk = $fields[0]
 
   exec { "${disk}: gather-keys":
     command => "ceph-deploy gatherkeys ${ceph::params::mon_initial_member}",
-    user    => $ceph::params::deploy_user,
-    cwd     => "/home/${ceph::params::deploy_user}",
     unless  => "ls /home/${ceph::params::deploy_user}/ceph.bootstrap-osd.keyring",
   } ->
 
   exec { "ceph-deploy disk zap ${::hostname}:${disk}":
-    cwd    => "/home/${ceph::params::deploy_user}",
     unless => "ls /home/${ceph::params::deploy_user}/${disk}",
   } ->
 
-  exec { "ceph-deploy osd create ${::hostname}:${name}":
-    cwd    => "/home/${ceph::params::deploy_user}",
+  exec { "ceph-deploy --overwrite-conf osd create ${::hostname}:${name}":
     unless => "ls /home/${ceph::params::deploy_user}/${disk}",
   } ->
 

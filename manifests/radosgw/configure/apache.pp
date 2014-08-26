@@ -32,7 +32,7 @@ class ceph::radosgw::configure::apache {
       { rewrite_rule => ['^/(.*) /s3gw.fcgi?%{QUERY_STRING} [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]'] },
     ],
     fastcgi_server => '/var/www/s3gw.fcgi',
-    fastcgi_socket => "/var/run/ceph/ceph.radosgw.${::hostname}.fastcgi.sock",
+    fastcgi_socket => "/var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
     fastcgi_dir    => '/var/www',
   }
 

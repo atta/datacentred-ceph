@@ -14,8 +14,8 @@ class ceph::params (
   $monitor_secret,
   $id_rsa,
   $id_rsa_pub,
-  $client_keys = {},
   $disks = [],
+  $is_gateway = false,
 ) {
 
   if $caller_module_name != $module_name {
