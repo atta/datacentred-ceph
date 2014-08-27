@@ -9,7 +9,8 @@ class ceph::radosgw::service {
   }
 
   service { 'radosgw-all':
-    ensure => running,
+    ensure    => running,
+    subscribe => Class['::ceph::config'],
   }
 
 }

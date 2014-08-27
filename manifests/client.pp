@@ -1,9 +1,20 @@
 # == Class: ceph::client
 #
-# Provision keys for things like cinder and glance
+# Provision keys for things like radosgw, cinder and glance
+#
+# == Parameters
+#
+# [*perms*]
+#   The permissions to grant the client, these must be escaped due to
+#   macro expansion e.g. 'osd \"allow rwx\" mon \"allow rwx\"'
+#
+# [*options*]
+#   By default this class will add the user and keyfile to ceph.conf
+#   you can add other options to those stanzas with this array
 #
 define ceph::client (
   $perms = '',
+  $options = [],
 ) {
 
   include ::ceph
@@ -19,10 +30,17 @@ define ceph::client (
     refreshonly => true,
   }
 
-#  concat::fragment { "ceph.${user}.conf":
-#    target  => '/etc/ceph/ceph.conf',
-#    content => template('ceph/ceph.client.conf.erb'),
-#    order   => '20',
-#  }
+  # Exec is inherited from ::ceph, which plays havoc with concat
+  # so restore order here
+  Exec {
+    user  => 'root',
+    group => 'root',
+  }
+
+  concat::fragment { "ceph.${user}.conf":
+    target  => "/etc/ceph/ceph.conf",
+    content => template('ceph/ceph.client.conf.erb'),
+    order   => '20',
+  }
 
 }

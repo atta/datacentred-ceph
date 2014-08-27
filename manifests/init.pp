@@ -11,6 +11,7 @@ class ceph {
   }
 
   include ::ceph::params
+  include ::ceph::config
 
   File {
     owner  => $ceph::params::deploy_user,
@@ -72,16 +73,16 @@ class ceph {
     content => "${ceph::params::deploy_user} ALL=(root) NOPASSWD:ALL",
   } ->
 
-  # Create the ceph configuration file for ceph-deploy
-  file { "/home/${ceph::params::deploy_user}/ceph.conf":
-    ensure  => file,
-    mode    => '0644',
-    content => template('ceph/ceph.conf.erb'),
-  } ->
-
-  # Install ceph deploy and ceph
+  # Install ceph deploy and ceph, note the initial configuration file
+  # will be overridden by ceph::config.  This is static to allow explicit
+  # dependencies for ceph deployment
   package { 'ceph-deploy':
     ensure => 'present',
+  } ->
+
+  file { "/home/${ceph::params::deploy_user}/ceph.conf":
+    ensure  => file,
+    content => template('ceph/ceph.conf.erb'),
   } ->
 
   exec { "ceph-deploy install --no-adjust-repos ${::hostname}":
