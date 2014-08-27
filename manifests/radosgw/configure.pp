@@ -14,7 +14,7 @@ class ceph::radosgw::configure {
     perms   => 'mon \"allow rwx\" osd \"allow rwx\"',
     options => [
       "host = ${::hostname}",
-      "rgw socket path = /var/run/ceph/ceph.radosgw.${::hostname}.fastcgi.sock",
+      "rgw socket path = /var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
       "log file = /var/log/ceph/client.radosgw.${::hostname}.log",
     ],
   }
