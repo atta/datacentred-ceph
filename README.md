@@ -9,6 +9,7 @@
    * [Ceph Monitor](#ceph-monitor)
    * [Ceph OSD](#ceph-osd)
    * [RADOS Gateway](#rados-gateway)
+4. [Dependencies](#dependencies)
 
 ## Overview
 
@@ -84,4 +85,11 @@ Again simply a matter of the following
 Notice the pattern yet?
 
     include ceph::radosgw
+
+## Dependencies
+
+This modules requires the following third party modules
+
+* puppetlabs-apache
+* puppetlabs-concat
 
