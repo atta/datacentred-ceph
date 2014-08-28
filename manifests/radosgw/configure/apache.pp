@@ -23,11 +23,12 @@ class ceph::radosgw::configure::apache {
   }
 
   apache::vhost { $::fqdn:
+    docroot        => '/var/www',
     port           => 443,
     ssl            => true,
     ssl_cert       => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
     ssl_key        => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
-    docroot        => '/var/www',
+    serveraliases  => "*.${::fqdn}",
     rewrites       => [
       { rewrite_rule => ['^/(.*) /s3gw.fcgi?%{QUERY_STRING} [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]'] },
     ],
