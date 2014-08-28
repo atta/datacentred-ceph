@@ -28,7 +28,9 @@ class ceph::radosgw::configure::apache {
     ssl            => true,
     ssl_cert       => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
     ssl_key        => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
-    serveraliases  => "*.${::fqdn}",
+    serveraliases  => [
+      "*.${::fqdn}",
+    ],
     rewrites       => [
       { rewrite_rule => ['^/(.*) /s3gw.fcgi?%{QUERY_STRING} [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]'] },
     ],
