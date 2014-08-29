@@ -17,8 +17,10 @@ define ceph::pool (
 
   include ::ceph::params
 
-  exec { "ssh -F /home/${ceph::params::deploy_user}/.ssh/config -i /home/${ceph::params::deploy_user}/.ssh/id_rsa ${ceph::params::deploy_user}@${ceph::params::mon_initial_member} \"ceph osd pool create ${name} ${pg_num} ${pg_num}\" >> ${keyring}":
-    unless =>  "ssh -F /home/${ceph::params::deploy_user}/.ssh/config -i /home/${ceph::params::deploy_user}/.ssh/id_rsa ${ceph::params::deploy_user}@${ceph::params::mon_initial_member} \"ceph osd lspools\" | grep ${name}",
+  exec { "ssh ${ceph::params::mon_initial_member} \"sudo ceph osd pool create ${name} ${pg_num} ${pg_num}\"":
+    unless =>  "ssh ${ceph::params::mon_initial_member} \"sudo ceph osd lspools\" | grep ${name}",
+    user  => $ceph::params::deploy_user,
+    group => $ceph::params::deploy_user,
   }
 
 }
