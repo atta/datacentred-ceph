@@ -39,6 +39,12 @@
 #   Disks which make up any OSDs on the host in the form
 #   'sdb:/dev/sdg1' i.e. see the ceph-deploy documentation
 #
+# [*rados_region*]
+#   The region to create a radosgw in
+#
+# [*rados_zone*]
+#   The zone to create a radosgw in
+#
 class ceph::params (
   $deploy_user,
   $deploy_user_is_system = false,
@@ -51,6 +57,8 @@ class ceph::params (
   $id_rsa,
   $id_rsa_pub,
   $disks = [],
+  $rados_region,
+  $rados_zone,
 ) {
 
   if $caller_module_name != $module_name {
