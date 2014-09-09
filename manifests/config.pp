@@ -7,6 +7,7 @@
 class ceph::config {
 
   include ::ceph::params
+  Class['ceph'] -> Class['ceph::config']
 
   # Create the ceph configuration file for ceph-deploy
   concat { "/etc/ceph/ceph.conf":

@@ -45,6 +45,11 @@
 # [*rados_zone*]
 #   The zone to create a radosgw in
 #
+# [*pg_num*]
+#   Number of placement groups to generate pools with, see the ceph
+#   documentation as it is a function of the number of OSDs you are
+#   spinning the cluster up with
+#
 class ceph::params (
   $deploy_user,
   $deploy_user_is_system = false,
@@ -59,6 +64,7 @@ class ceph::params (
   $disks = [],
   $rados_region,
   $rados_zone,
+  $pg_num,
 ) {
 
   if $caller_module_name != $module_name {

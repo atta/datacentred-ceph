@@ -13,7 +13,7 @@ class ceph::radosgw::configure {
 
   $region = $ceph::params::rados_region
   $zone = "${region}-${ceph::params::rados_zone}"
-  $pg_num = 1024
+  $pg_num = $ceph::params::pg_num
 
   ceph::pool { [
     ".${region}.rgw.root",
