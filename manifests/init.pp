@@ -33,44 +33,11 @@ class ceph {
     system     => $ceph::params::deploy_user_is_system,
   } ->
 
-  # Enable key based SSH access
-  file { "/home/${ceph::params::deploy_user}/.ssh":
-    ensure => directory,
-    mode   => '0750',
-  } ->
-
-  file { "/home/${ceph::params::deploy_user}/.ssh/id_rsa":
-    ensure  => file,
-    mode    => '0400',
-    content => $ceph::params::id_rsa,
-  } ->
-
-  file { "/home/${ceph::params::deploy_user}/.ssh/id_rsa.pub":
-    ensure  => file,
-    mode    => '0644',
-    content => template('ceph/id_rsa.pub.erb'),
-  } ->
-
-  file { "/home/${ceph::params::deploy_user}/.ssh/config":
-    ensure  => file,
-    mode    => '0644',
-    content => template('ceph/config.erb'),
-  } ->
-
-  ssh_authorized_key { $ceph::params::deploy_user:
-    ensure => present,
-    key    => $ceph::params::id_rsa_pub,
-    type   => 'ssh-rsa',
-    user   => $ceph::params::deploy_user,
-  } ->
-
-  # Enable passwordless sudo
-  file { "/etc/sudoers.d/${ceph::params::deploy_user}":
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0440',
-    content => "${ceph::params::deploy_user} ALL=(root) NOPASSWD:ALL",
+  passwordless_ssh { $ceph::params::deploy_user:
+    ssh_private_key => $ceph::params::id_rsa,
+    ssh_public_key  => $ceph::params::id_rsa_pub,
+    sudo            => true,
+    sudo_users      => 'root',
   } ->
 
   # Install ceph deploy and ceph, note the initial configuration file

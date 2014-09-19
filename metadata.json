@@ -1,0 +1,15 @@
+{
+  "name": "datacentred-ceph",
+  "version": "1.0.1",
+  "author": "DataCentred Ltd",
+  "summary": "Module for managing ceph",
+  "license": "Apache License, Version 2.0",
+  "source": "git://github.com/datacentred/datacentred-ceph.git",
+  "project_page": "https://github.com/datacentred/datacentred-ceph",
+  "issues_url": "https://github.com/datacentred/datacentred-ceph/issues",
+  "description": "Installs ceph monitors, osds and federated gateways",
+  "dependencies": [
+    {"name":"datacentred/passwordless_ssh", "version_requirement",">=1.0.1"}
+  ]
+}
+
