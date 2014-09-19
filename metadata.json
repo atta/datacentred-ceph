@@ -1,6 +1,6 @@
 {
   "name": "datacentred-ceph",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "DataCentred Ltd",
   "summary": "Module for managing ceph",
   "license": "Apache License, Version 2.0",
