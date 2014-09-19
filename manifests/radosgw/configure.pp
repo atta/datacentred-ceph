@@ -8,14 +8,42 @@ class ceph::radosgw::configure {
     fail("${name} is private")
   }
 
+  include ceph::params
   contain ceph::radosgw::configure::apache
+
+  $region = $ceph::params::rados_region
+  $zone = "${region}-${ceph::params::rados_zone}"
+  $pg_num = $ceph::params::pg_num
+
+  ceph::pool { [
+    ".${region}.rgw.root",
+    ".${zone}.domain.rgw",
+    ".${zone}.rgw.root",
+    ".${zone}.rgw.control",
+    ".${zone}.rgw.gc",
+    ".${zone}.rgw.buckets.index",
+    ".${zone}.rgw.buckets",
+    ".${zone}.log",
+    ".${zone}.intent-log",
+    ".${zone}.usage",
+    ".${zone}.users",
+    ".${zone}.users.email",
+    ".${zone}.users.swift",
+    ".${zone}.users.uid",
+  ]:
+    pg_num => $pg_num,
+  }
 
   ceph::client { "radosgw.${::hostname}":
     perms   => 'mon \"allow rwx\" osd \"allow rwx\"',
     options => [
-      "host = ${::hostname}",
+      "rgw region = ${region}",
+      "rgw region root pool = .${region}.rgw.root",
+      "rgw zone = ${zone}",
+      "rgw zone root pool = .${zone}.rgw.root",
+      "rgw dns name = ${::hostname}",
       "rgw socket path = /var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
-      "log file = /var/log/ceph/client.radosgw.${::hostname}.log",
+      "host = ${::hostname}",
     ],
   }
 

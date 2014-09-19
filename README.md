@@ -67,6 +67,9 @@ This is a shared set of code so should probably live in hiera/common/%{calling_m
     ceph::params::disks:
        - 'sdb:/dev/sdd1'
        - 'sdc:/dev/sdd2'
+    ceph::params::rados_region: 'uk'
+    ceph::params::rados_zone: 'northwest'
+    ceph::params::pg_num: 1024
 
 ### Ceph monitor
 
