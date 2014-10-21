@@ -41,6 +41,8 @@ class ceph::radosgw::configure {
       "rgw region root pool = .${region}.rgw.root",
       "rgw zone = ${zone}",
       "rgw zone root pool = .${zone}.rgw.root",
+      "rgw enable ops log = true",
+      "rgw enable usage log = true",
       "rgw dns name = ${::hostname}",
       "rgw socket path = /var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
       "host = ${::hostname}",
