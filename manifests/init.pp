@@ -54,7 +54,6 @@ class ceph {
 
   exec { "ceph-deploy install --no-adjust-repos ${::hostname}":
     unless => 'dpkg -l | grep ceph-common',
-    path   => '/bin:/usr/bin'
   }
 
 }

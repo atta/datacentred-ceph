@@ -24,12 +24,10 @@ define ceph::client (
 
   exec { "echo -n '[${user}]\\n\\tkey = ' > ${keyring}":
     unless => "grep ${user} ${keyring}",
-    path   => '/bin:/usr/bin',
   } ~>
 
   exec { "ssh -F /home/${ceph::params::deploy_user}/.ssh/config -i /home/${ceph::params::deploy_user}/.ssh/id_rsa ${ceph::params::deploy_user}@${ceph::params::mon_initial_member} sudo \"ceph auth get-or-create-key ${user} ${perms}\" >> ${keyring}":
     refreshonly => true,
-    path        => '/bin:/usr/bin',
   }
 
   # Exec is inherited from ::ceph, which plays havoc with concat
