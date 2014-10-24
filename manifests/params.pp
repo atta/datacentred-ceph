@@ -50,6 +50,10 @@
 #   documentation as it is a function of the number of OSDs you are
 #   spinning the cluster up with
 #
+# [*osd_location_hook*]
+#   Custom location script to define physical location of the OSD
+#   within crush failure domains
+#
 class ceph::params (
   $deploy_user,
   $deploy_user_is_system = false,
@@ -65,6 +69,7 @@ class ceph::params (
   $rados_region,
   $rados_zone,
   $pg_num,
+  $osd_location_hook = undef,
 ) {
 
   if $caller_module_name != $module_name {
