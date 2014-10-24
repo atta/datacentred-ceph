@@ -14,6 +14,7 @@ class ceph::radosgw::configure {
   $region = $ceph::params::rados_region
   $zone = "${region}-${ceph::params::rados_zone}"
   $pg_num = $ceph::params::pg_num
+  $rgw_pool_size = $ceph::params::rgw_pool_size
 
   ceph::pool { [
     ".${region}.rgw.root",
@@ -41,15 +42,16 @@ class ceph::radosgw::configure {
       "rgw region root pool = .${region}.rgw.root",
       "rgw zone = ${zone}",
       "rgw zone root pool = .${zone}.rgw.root",
-      "rgw enable ops log = true",
-      "rgw enable usage log = true",
+      'rgw enable ops log = true',
+      'rgw enable usage log = true',
+      "rgw thread pool size = ${rgw_pool_size}",
       "rgw dns name = ${::hostname}",
       "rgw socket path = /var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
       "host = ${::hostname}",
     ],
   }
 
-  file { "/var/lib/ceph/radosgw/ceph-radosgw.${hostname}":
+  file { "/var/lib/ceph/radosgw/ceph-radosgw.${::hostname}":
     ensure => directory,
     owner  => 'root',
     group  => 'root',
@@ -57,7 +59,7 @@ class ceph::radosgw::configure {
   }
 
   # Undocumented but the init scripts rely on this file existing
-  file { "/var/lib/ceph/radosgw/ceph-radosgw.${hostname}/done":
+  file { "/var/lib/ceph/radosgw/ceph-radosgw.${::hostname}/done":
     ensure => file,
     owner  => 'root',
     group  => 'root',

@@ -1,0 +1,5 @@
+
+[osd]
+<% if scope.lookupvar('ceph::params::osd_location_hook') -%>
+osd crush location hook = <%= scope.lookupvar('ceph::params::osd_location_hook') %>
+<% end -%>

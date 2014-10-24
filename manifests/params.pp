@@ -54,6 +54,9 @@
 #   Custom location script to define physical location of the OSD
 #   within crush failure domains
 #
+# [*rgw_pool_size*]
+#   Number of worker threads supported by the rados gateway
+#
 class ceph::params (
   $deploy_user,
   $deploy_user_is_system = false,
@@ -70,6 +73,7 @@ class ceph::params (
   $rados_zone,
   $pg_num,
   $osd_location_hook = undef,
+  $rgw_pool_size = 100,
 ) {
 
   if $caller_module_name != $module_name {

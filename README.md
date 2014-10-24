@@ -71,6 +71,7 @@ This is a shared set of code so should probably live in hiera/common/%{calling_m
     ceph::params::rados_zone: 'northwest'
     ceph::params::pg_num: 1024
     ceph::params::osd_location_hook: '/usr/local/bin/location_hook.py'
+    ceph::params::rgw_pool_size: 4096
 
 ### Ceph monitor
 

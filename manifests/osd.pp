@@ -22,6 +22,12 @@ class ceph::osd {
   include ::ceph
   Class['::ceph'] -> Class['ceph::osd']
 
+  concat::fragment { "ceph.osd.conf":
+    target  => '/etc/ceph/ceph.conf',
+    content => template('ceph/ceph.osd.conf.erb'),
+    order   => '20',
+  }
+
   ceph::osd_private { $ceph::params::disks: }
 
 }
