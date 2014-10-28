@@ -17,10 +17,13 @@ define ceph::pool (
 
   include ::ceph::params
 
-  exec { "ssh ${ceph::params::mon_initial_member} \"sudo ceph osd pool create ${name} ${pg_num} ${pg_num}\"":
-    unless =>  "ssh ${ceph::params::mon_initial_member} \"sudo ceph osd lspools\" | grep ${name}",
-    user  => $ceph::params::deploy_user,
-    group => $ceph::params::deploy_user,
+  $mon_array = split($ceph::params::mon_initial_member, ',')
+  $mon = $mon_array[0]
+
+  exec { "ssh ${mon} \"sudo ceph osd pool create ${name} ${pg_num} ${pg_num}\"":
+    unless =>  "ssh ${mon} \"sudo ceph osd lspools\" | grep ${name}",
+    user   => $ceph::params::deploy_user,
+    group  => $ceph::params::deploy_user,
   }
 
 }
