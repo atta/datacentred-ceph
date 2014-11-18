@@ -15,6 +15,9 @@ class ceph::radosgw::configure {
   $zone = "${region}-${ceph::params::rados_zone}"
   $pg_num = $ceph::params::pg_num
   $rgw_pool_size = $ceph::params::rgw_pool_size
+  $keystone_url = $ceph::params::keystone_url
+  $keystone_admin_token = $ceph::params::keystone_admin_token
+  $keystone_accepted_roles = $ceph::params::keystone_accepted_roles
 
   ceph::pool { [
     ".${region}.rgw.root",
@@ -48,6 +51,10 @@ class ceph::radosgw::configure {
       "rgw dns name = ${::hostname}",
       "rgw socket path = /var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
       "host = ${::hostname}",
+      "rgw keystone url = ${keystone_url}",
+      "rgw keystone admin token = ${keystone_admin_token}",
+      "rgw keystone accepted roles = ${keystone_accepted_roles}",
+      "rgw s3 auth use keystone = true",
     ],
   }
 

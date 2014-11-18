@@ -57,6 +57,15 @@
 # [*rgw_pool_size*]
 #   Number of worker threads supported by the rados gateway
 #
+# [*keystone_url*]
+#   URL and port of the keystone endpoint
+#
+# [*keystone_admin_token*]
+#   Keystone admin user token
+#
+# [*keystone_accepted_roles*]
+#   Keystone roles to allow object storage
+#
 class ceph::params (
   $deploy_user,
   $deploy_user_is_system = false,
@@ -74,6 +83,9 @@ class ceph::params (
   $pg_num,
   $osd_location_hook = undef,
   $rgw_pool_size = 100,
+  $keystone_url,
+  $keystone_admin_token,
+  $keystone_accepted_roles,
 ) {
 
   if $caller_module_name != $module_name {
