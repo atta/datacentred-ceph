@@ -19,6 +19,9 @@ define ceph::client (
 
   include ::ceph
 
+  $mon_array = split($ceph::params::mon_initial_member, ',')
+  $mon = $mon_array[0]
+
   $user = "client.${name}"
   $keyring = "/etc/ceph/ceph.${user}.keyring"
 
@@ -26,7 +29,7 @@ define ceph::client (
     unless => "grep ${user} ${keyring}",
   } ~>
 
-  exec { "ssh -F /home/${ceph::params::deploy_user}/.ssh/config -i /home/${ceph::params::deploy_user}/.ssh/id_rsa ${ceph::params::deploy_user}@${ceph::params::mon_initial_member} sudo \"ceph auth get-or-create-key ${user} ${perms}\" >> ${keyring}":
+  exec { "ssh -F /home/${ceph::params::deploy_user}/.ssh/config -i /home/${ceph::params::deploy_user}/.ssh/id_rsa ${ceph::params::deploy_user}@${mon} sudo \"ceph auth get-or-create-key ${user} ${perms}\" >> ${keyring}":
     refreshonly => true,
   }
 
