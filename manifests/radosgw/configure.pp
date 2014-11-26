@@ -18,6 +18,7 @@ class ceph::radosgw::configure {
   $keystone_url = $ceph::params::keystone_url
   $keystone_admin_token = $ceph::params::keystone_admin_token
   $keystone_accepted_roles = $ceph::params::keystone_accepted_roles
+  $rgw_dns_name = $ceph::params::rgw_dns_name
 
   ceph::pool { [
     ".${region}.rgw.root",
@@ -48,13 +49,14 @@ class ceph::radosgw::configure {
       'rgw enable ops log = true',
       'rgw enable usage log = true',
       "rgw thread pool size = ${rgw_pool_size}",
-      "rgw dns name = ${::hostname}",
+      "rgw dns name = ${rgw_dns_name}",
       "rgw socket path = /var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
       "host = ${::hostname}",
       "rgw keystone url = ${keystone_url}",
       "rgw keystone admin token = ${keystone_admin_token}",
       "rgw keystone accepted roles = ${keystone_accepted_roles}",
       "rgw s3 auth use keystone = true",
+      "rgw relaxed s3 bucket names = true",
     ],
   }
 

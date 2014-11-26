@@ -66,6 +66,9 @@
 # [*keystone_accepted_roles*]
 #   Keystone roles to allow object storage
 #
+# [*rgw_dns_name*]
+#   DNS name to match subdomain calls with
+#
 class ceph::params (
   $deploy_user,
   $deploy_user_is_system = false,
@@ -86,6 +89,7 @@ class ceph::params (
   $keystone_url,
   $keystone_admin_token,
   $keystone_accepted_roles,
+  $rgw_dns_name,
 ) {
 
   if $caller_module_name != $module_name {
