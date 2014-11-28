@@ -90,6 +90,7 @@ class ceph::params (
   $keystone_admin_token,
   $keystone_accepted_roles,
   $rgw_dns_name,
+  $ssl,
 ) {
 
   if $caller_module_name != $module_name {

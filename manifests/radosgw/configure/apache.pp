@@ -22,12 +22,31 @@ class ceph::radosgw::configure::apache {
     content => template('ceph/s3gw.fcgi.erb'),
   }
 
-  apache::vhost { $::fqdn:
+  if $ceph::params::ssl {
+
+    apache::vhost { 'radosgw-ssl':
+      servername     => $::fqdn,
+      docroot        => '/var/www',
+      port           => 443,
+      ssl            => true,
+      ssl_cert       => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
+      ssl_key        => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
+      serveraliases  => [
+        "*.${::fqdn}",
+      ],
+      rewrites       => [
+        { rewrite_rule => ['^/(.*) /s3gw.fcgi?%{QUERY_STRING} [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]'] },
+      ],
+      fastcgi_socket => "/var/run/ceph/ceph.client.radosgw.${::hostname}.fastcgi.sock",
+      fastcgi_dir    => '/var/www',
+    }
+
+  }
+
+  apache::vhost { 'radosgw':
+    servername     => $::fqdn,
     docroot        => '/var/www',
-    port           => 443,
-    ssl            => true,
-    ssl_cert       => "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
-    ssl_key        => "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem",
+    port           => 80,
     serveraliases  => [
       "*.${::fqdn}",
     ],
