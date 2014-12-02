@@ -55,7 +55,6 @@ class ceph::radosgw::configure {
       "rgw keystone url = ${keystone_url}",
       "rgw keystone admin token = ${keystone_admin_token}",
       "rgw keystone accepted roles = ${keystone_accepted_roles}",
-      "rgw s3 auth use keystone = true",
       "rgw relaxed s3 bucket names = true",
     ],
   }
