@@ -6,6 +6,8 @@ auth supported = cephx
 filestore xattr use omap = true
 public network = <%= scope.lookupvar('ceph::params::public_network') %>
 cluster network = <%= scope.lookupvar('ceph::params::cluster_network') %>
+mon compact on start = true
+mon compact on trim = true
 
 [osd]
 <% if scope.lookupvar('ceph::params::osd_location_hook') -%>
