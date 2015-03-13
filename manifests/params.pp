@@ -91,6 +91,7 @@ class ceph::params (
   $keystone_accepted_roles,
   $rgw_dns_name,
   $ssl,
+  $global_params = {},
 ) {
 
   if $caller_module_name != $module_name {
